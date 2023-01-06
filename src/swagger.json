@@ -1,0 +1,250 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api para registro de usuario, sistema de login, e gerenciamento de clientes",
+        "description": "Essa api tem como objetivo criar servicos login/logout de um usuário  e o crud de  clientes",
+        "contact": {
+            "name": "Thiago Felipe",
+            "email": "felipedasilvathiago@gmail.com",
+            "url": "https://www.github.com/thifelipesilva"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:4000/api/v1",
+            "description": "url base da api de teste"
+        }
+    ],
+    "paths": {
+        "/clients": {
+            "post": {
+                "summary": "Rota responsável por cadastrar um cliente",
+                "tags": ["Clients"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Client"
+                            },
+                            "examples": {
+                                "client": {
+                                    "value": {
+                                        "name": "Aline",
+                                        "email": "alinetorres@email.com",
+                                        "phoneNumber": "81996036328",
+                                        "addres": "Rua aquela ao lado da outra",
+                                        "cpf": "09706673458"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Cliente não foi criado",
+                        "content": {
+                            "application/json": {
+                                "example": "fail"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "sucesso, cliente criado",
+                        "content" : {
+                            "application/json": {
+                                "schema": {
+                                    "types": "object",
+                                    "$ref":"#/components/schemas/Client"                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Rota responsável por listar todos os clientes",
+                "tags": ["Clients"],
+                "responses":{
+                    "200": {
+                        "description": "sucesso, clientes listados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "types": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Client"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Clientes não foram listados",
+                        "content": {
+                            "application/json": {
+                                "example": "fail"
+                            }
+                        }
+                    }
+                }              
+            }
+        },
+        "/clients/{id}": {
+            "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "schema": {
+                    "type": "string"
+                  },
+                  "required": true
+                }
+            ],
+            "get": {
+                "summary":"Rota responsável por listar um clientes pelo seu id",
+                "tags": ["Clients"],
+                "responses": {
+                    "200": {
+                        "description":"sucesso, cliente listado por id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "types": "object",
+                                    "$ref":"#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Clientes não foi listado",
+                        "content": {
+                            "application/json": {
+                                "example": "fail"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "sumary": "Rota responsável por atualizar os dados de um cliente pelo seu id",
+                "tags": ["Clients"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Client"
+                            },
+                            "examples": {
+                                "client": {
+                                    "value": {
+                                        "name": "Aline",
+                                        "email": "alinetorres@email.com",
+                                        "phoneNumber": "81996036328",
+                                        "addres": "Rua aquela ao lado da outra",
+                                        "cpf": "09706673458"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description":"sucesso, cliente atualizado por id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "types": "object",
+                                    "$ref":"#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Clientes não foi atualizado",
+                        "content": {
+                            "application/json": {
+                                "example": "fail"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Rota responsável por deletar um cliente pelo seu id",
+                "tags": ["Clients"],
+                "responses": {
+                    "200": {
+                        "description": "sucesso, clientes deletado",
+                        "content": {
+                            "application/json": {
+                                "example": "Cliente foi deletado"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Clientes não foi deletado",
+                        "content": {
+                            "application/json": {
+                                "example": "fail"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            
+        }
+    },
+    "components": {
+        "schemas": {
+            "Client": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    },
+                    "addres": {
+                        "type": "string"
+                    },
+                    "cpf": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "auth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
