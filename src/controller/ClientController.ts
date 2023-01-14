@@ -98,6 +98,30 @@ class ClientController {
             });
         };
     };
+
+    static async addSale(req: Request, res: Response) {
+        const { id } = req.params;
+        const dataSales = req.body;
+
+        try {
+        
+            const client = await Client.findById(id);
+            client?.sales.push(dataSales); 
+            await client?.save();          
+            
+            res.status(200).json({
+                status: 'sucess',
+                data: {
+                    ...dataSales
+                }
+            });
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                status: 'fail'
+            });
+        };
+    }
 };
 
 

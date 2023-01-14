@@ -56,7 +56,7 @@ class UserController {
                 id: user.id
             };
 
-            const token = sign(payload, 'sasasaassasa');
+            const token = sign(payload, 'sasasaassasa', { expiresIn: '35m'});
 
             return token;
         };

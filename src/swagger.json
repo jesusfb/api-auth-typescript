@@ -21,6 +21,7 @@
             "post": {
                 "summary": "Rota responsável por cadastrar um cliente",
                 "tags": ["Clients"],
+                "security": [{"bearerAuth": []}],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -66,6 +67,7 @@
             "get": {
                 "summary": "Rota responsável por listar todos os clientes",
                 "tags": ["Clients"],
+                "security": [{"bearerAuth": []}],
                 "responses":{
                     "200": {
                         "description": "sucesso, clientes listados",
@@ -105,6 +107,7 @@
             "get": {
                 "summary":"Rota responsável por listar um clientes pelo seu id",
                 "tags": ["Clients"],
+                "security": [{"bearerAuth": []}],
                 "responses": {
                     "200": {
                         "description":"sucesso, cliente listado por id",
@@ -130,6 +133,7 @@
             "put": {
                 "sumary": "Rota responsável por atualizar os dados de um cliente pelo seu id",
                 "tags": ["Clients"],
+                "security": [{"bearerAuth": []}],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -175,6 +179,7 @@
             "delete": {
                 "summary": "Rota responsável por deletar um cliente pelo seu id",
                 "tags": ["Clients"],
+                "security": [{"bearerAuth": []}],
                 "responses": {
                     "200": {
                         "description": "sucesso, clientes deletado",
@@ -195,8 +200,75 @@
                 }
             }
         },
-        "/register": {
-            
+        "/users/register": {
+            "post": {
+                "summary":"Rota responsável por cadastrar um usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "username": "aline.torres",
+                                        "password": "a1a2a3"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "O usuário não foi criado",
+                        "content": {
+                            "application/json": {
+                                "example": "fail"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "sucesso, usuario criado",
+                        "content" : {
+                            "application/json": {
+                                "schema": {
+                                    "types": "object",
+                                    "$ref":"#/components/schemas/User"                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "summary":"Rota responsável por logar um usuário",
+                "tags": ["Users"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "username": "aline.torres",
+                                        "password": "a1a2a3"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    
+                }
+            }
         }
     },
     "components": {
@@ -240,7 +312,7 @@
             }
         },
         "securitySchemes": {
-            "auth": {
+            "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer",
                 "bearerFormat": "JWT"

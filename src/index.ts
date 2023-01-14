@@ -4,12 +4,14 @@ import mongoose from "mongoose";
 
 import { config } from "./config/config";
 
+
+
 import clientRouter from "./routes/clientRoutes";
 import userRouter from "./routes/userRoutes";
 
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocs from './swagger.json'
-import { tokenAuthenticate } from "./service/tokenAuthenticate";
+import { tokenAuthenticate } from "./auth/tokenAuthenticate";
 
 const app = express();
 const port = config.server.port;
@@ -36,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 //routes
-app.use('/api/v1/clients', clientRouter);
+app.use('/api/v1/clients', tokenAuthenticate, clientRouter);
 app.use('/api/v1/users', userRouter);
 
 

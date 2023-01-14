@@ -8,6 +8,7 @@ clientRouter
     .get('/:id', ClientController.getClients)
     .post('/', ClientController.createClient)
     .put('/:id', ClientController.updateClient)
+    .post('/addvenda/:id', ClientController.addSale)
     .delete('/:id', ClientController.deleteClient)
 
 export default clientRouter;
