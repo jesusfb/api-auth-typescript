@@ -15,13 +15,9 @@ class UserController {
             });
 
             if(userAlreadyExists) {
-                res.status(400).json({
-                    status: 'fail',
-                    message: 'user already exists!'
-                })
+                res.status(400).json('user already exists!');              
                 
-                
-            };
+            }
 
             const salt = await genSalt(12);
             const passwordHash = await hash(password, salt)
@@ -31,19 +27,11 @@ class UserController {
                 password: passwordHash
             });
 
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    user
-                }
-            });
+            res.status(201).json(user);
 
         } catch (error) {
-            console.log(error);
-            res.status(401).json({
-                status: 'fail'
-            });
-        };
+            res.status(400).json((error as Error).message);
+        }
     }
 
     static async login(req: Request, res: Response) {
@@ -59,41 +47,28 @@ class UserController {
             const token = sign(payload, 'sasasaassasa', { expiresIn: '35m'});
 
             return token;
-        };
+        }
 
         
 
         try {
             const user = await User.findOne({ username });        
             if(!user) {
-                return res.status(404).json({
-                    status: 'fail',
-                    message: 'User not found'
-                });
-            };
+                return res.status(404).json('User not found');
+            }
 
             const passwordIsCorrect = await compare(password, user.password);
 
             if(passwordIsCorrect) {
                 const token = createToken(user);
                 res.set('Authorization', token);
-                res.status(200).json({
-                    status: 'success',
-                    data: {
-                        user
-                    }
-                });
+                res.status(200).json(user);
             } else{
-                res.status(400).json({
-                    status: 'fail',
-                    message: 'Incorrect password'
-                });  
-            };
+                res.status(400).json('Incorrect password');  
+            }
             
         } catch (error) {
-            res.status(400).json({
-                status: 'login fail'
-            })
+            res.status(400).json(((error as Error).message));
         }
 
     }   
@@ -103,13 +78,13 @@ class UserController {
             const users = await User.find();
             res.status(200).json(users)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(400).json(((error as Error).message))
         }
     }
      
 
 
    
-};
+}
 
 export default UserController;

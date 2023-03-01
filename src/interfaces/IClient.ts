@@ -8,6 +8,6 @@ interface IClient extends Document{
     addres: string,
     cpf: string,
     sales: ISales[]
-};
+}
 
 export default IClient;

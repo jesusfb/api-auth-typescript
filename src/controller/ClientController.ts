@@ -7,60 +7,34 @@ class ClientController {
     static async getAllClients(req: Request, res: Response) {
         try {
             const clients =  await Client.find();
-            res.status(200).json({
-                status: 'sucess',
-                results: clients.length,
-                data: {
-                    clients
-                }
-            });
+            res.status(200).json(clients);
         } catch (error) {
-            res.status(400).json({
-                status: 'fail'
-            });
-        };
-    };
+            res.status(400).json((error as Error).message);
+        }
+    }
 
     static async getClients(req: Request, res: Response) {
         const { id } = req.params;
         try {
             const client = await Client.findById(id);
-
             if(!client) {
-                res.status(404).json({
-                    status: 'fail'
-                });
-            }
-            
-            res.status(200).json({
-                status: 'sucess',
-                data: {
-                    client
-                }
-            });
+                res.status(404).json(`Id ${id} não encontrado`);
+            }            
+            res.status(200).json(client);
         } catch (error) {
-            res.status(404).json({
-                status: 'fail'
-            });
-        };
-    };
+            res.status(404).json((error as Error).message);
+        }
+    }
 
     static async createClient(req: Request, res: Response) {
         const dataClient = req.body;
         try {
             const client = await Client.create(dataClient);
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    client
-                }
-            });
+            res.status(201).json(client);
         } catch (error) {
-            res.status(401).json({
-                status: 'fail'
-            });
-        };
-    };
+            res.status(401).json((error as Error).message);
+        }
+    }
 
     static async updateClient(req: Request, res: Response) {
         const { id } = req.params;
@@ -68,18 +42,11 @@ class ClientController {
         try {
             await Client.findByIdAndUpdate(id, dataClient);
             const client =  await Client.findById(id);
-            res.status(200).json({
-                status: 'sucess',
-                data: {
-                    client
-                }
-            });
+            res.status(200).json(client);
         } catch (error) {
-            res.status(400).json({
-                status: 'fail'
-            });
-        };
-    };
+            res.status(400).json((error as Error).message);
+        }
+    }
 
     
 
@@ -88,41 +55,26 @@ class ClientController {
 
         try {
             await Client.findByIdAndDelete(id);
-            res.status(200).json({
-                status: 'sucess',
-                message: `Id ${id} deletado`
-            });
+            res.status(200).json(`Id ${id} deletado`);
         } catch (error) {
-            res.status(400).json({
-                status: 'fail'
-            });
-        };
-    };
+            res.status(400).json((error as Error).message);
+        }
+    }
 
     static async addSale(req: Request, res: Response) {
         const { id } = req.params;
         const dataSales = req.body;
 
-        try {
-        
+        try {        
             const client = await Client.findById(id);
             client?.sales.push(dataSales); 
-            await client?.save();          
-            
-            res.status(200).json({
-                status: 'sucess',
-                data: {
-                    ...dataSales
-                }
-            });
+            await client?.save();       
+            res.status(200).json(client);
         } catch (error) {
-            console.log(error)
-            res.status(400).json({
-                status: 'fail'
-            });
-        };
+            res.status(400).json((error as Error).message);
+        }
     }
-};
+}
 
 
 export default ClientController;
