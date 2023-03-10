@@ -1,10 +1,12 @@
+import { Controller, Delete, Get, Post, Put } from "@overnightjs/core";
 import { Request, Response } from "express";
 import Client from "../model/client";
 
+@Controller('api/v1/clients')
 class ClientController {
     
-
-    static async getAllClients(req: Request, res: Response) {
+    @Get('')
+    public async getAllClients(req: Request, res: Response) {
         try {
             const clients =  await Client.find();
             res.status(200).json(clients);
@@ -13,7 +15,8 @@ class ClientController {
         }
     }
 
-    static async getClients(req: Request, res: Response) {
+    @Get(':id')
+    public async getClients(req: Request, res: Response) {
         const { id } = req.params;
         try {
             const client = await Client.findById(id);
@@ -26,7 +29,8 @@ class ClientController {
         }
     }
 
-    static async createClient(req: Request, res: Response) {
+    @Post('')
+    public async createClient(req: Request, res: Response) {
         const dataClient = req.body;
         try {
             const client = await Client.create(dataClient);
@@ -36,7 +40,8 @@ class ClientController {
         }
     }
 
-    static async updateClient(req: Request, res: Response) {
+    @Put(':id')
+    public async updateClient(req: Request, res: Response) {
         const { id } = req.params;
         const dataClient = req.body;
         try {
@@ -49,8 +54,8 @@ class ClientController {
     }
 
     
-
-    static async deleteClient(req: Request, res: Response) {
+    @Delete(':id')
+    public async deleteClient(req: Request, res: Response) {
         const { id } = req.params;
 
         try {
@@ -61,7 +66,8 @@ class ClientController {
         }
     }
 
-    static async addSale(req: Request, res: Response) {
+    @Post('/addvenda/:id')
+    public async addSale(req: Request, res: Response) {
         const { id } = req.params;
         const dataSales = req.body;
 

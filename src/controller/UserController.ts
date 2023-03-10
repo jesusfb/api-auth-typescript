@@ -1,12 +1,15 @@
+import { Controller, Post, Get } from "@overnightjs/core";
 import { compare, genSalt, hash } from "bcryptjs";
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import IUser from "../interfaces/IUser";
 import User from "../model/user";
 
+@Controller('api/v1/users')
 class UserController {
 
-    static async register(req: Request, res: Response) {
+    @Post('register')
+    public async register(req: Request, res: Response) {
         const { username, password } = req.body;
 
         try {
@@ -34,7 +37,8 @@ class UserController {
         }
     }
 
-    static async login(req: Request, res: Response) {
+    @Post('login')
+    public async login(req: Request, res: Response) {
 
         const { username, password } = req.body;
         //const secret = config.auth.secret;
@@ -73,7 +77,8 @@ class UserController {
 
     }   
 
-    static async getUsers(req: Request, res: Response) {
+    @Get('')
+    public async getUsers(req: Request, res: Response) {
         try {
             const users = await User.find();
             res.status(200).json(users)
