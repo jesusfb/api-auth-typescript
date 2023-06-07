@@ -1,4 +1,4 @@
-import { Document, Types } from "mongoose";
+import { Document, Types } from 'mongoose';
 
 interface ISales extends Document {
     _id: Types.ObjectId

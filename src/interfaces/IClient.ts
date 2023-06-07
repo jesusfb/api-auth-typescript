@@ -1,5 +1,5 @@
-import { Document } from "mongoose";
-import ISales from "./ISales";
+import { Document } from 'mongoose';
+import ISales from './ISales';
 
 interface IClient extends Document{
     name: string,

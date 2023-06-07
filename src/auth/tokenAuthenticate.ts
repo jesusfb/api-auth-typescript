@@ -1,28 +1,28 @@
-import { NextFunction, Request, Response } from "express";
-import { verify } from "jsonwebtoken";
+import { NextFunction, Request, Response } from 'express';
+import { verify } from 'jsonwebtoken';
 
 export function tokenAuthenticate(req: Request, res: Response, next: NextFunction) {
     
-    const authToken = req.headers.authorization;
+  const authToken = req.headers.authorization;
 
-    if(!authToken) {
-        return res.status(401).json({
-            status: 'token is missing',
-            message: 'acesso negado'            
-        });
-    }
+  if(!authToken) {
+    return res.status(401).json({
+      status: 'token is missing',
+      message: 'acesso negado'            
+    });
+  }
 
-    const [, token] = authToken.split(" ");
+  const [, token] = authToken.split(' ');
 
-    try {
-        verify(token, 'sasasaassasa');
+  try {
+    verify(token, 'sasasaassasa');
 
-        next();
+    next();
         
-    } catch (error) { 
-        res.status(401).json({
-            status: 'token invalid',
-            message: 'acesso negado'            
-        });
-    }
+  } catch (error) { 
+    res.status(401).json({
+      status: 'token invalid',
+      message: 'acesso negado'            
+    });
+  }
 }
