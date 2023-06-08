@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const SECRET_JWT = (process.env.SECRET_JWT)?.toString;
+const SECRET_JWT = process.env.SECRET_JWT;
 const MONGO_IP = process.env.MONGO_IP;
 const MONGO_PORT = process.env.MONGO_PORT;
 const MONGO_USERNAME = process.env.MONGO_USERNAME;

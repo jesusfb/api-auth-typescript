@@ -4,7 +4,7 @@ import ISales from '../interfaces/ISales';
 
 type ClientModelType = Model<IClient>;
 
-const clientSchema = new mongoose.Schema<IClient, ClientModelType>({
+const clientSchema = new Schema<IClient, ClientModelType>({
 
   name: {
     type: String,
@@ -28,7 +28,7 @@ const clientSchema = new mongoose.Schema<IClient, ClientModelType>({
     type: String,
     required: [true, 'Client must have a cpf'],
     minLengt: [11, 'Cpf must have more than 11 letters'],
-    maxLengt: [11, 'Email must have less than 11 letters']
+    maxLengt: [11, 'Cpf must have less than 11 letters']
   },
   sales: [new Schema<ISales>({
     id: {
