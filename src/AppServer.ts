@@ -6,8 +6,8 @@ import ClientController from './controller/ClientController';
 import UserController from './controller/UserController';
 import swaggerDocs from './swagger.json';
 import * as database from './database';
-import handlerError from './middlewares/handlerError';
-import { handler404 } from './middlewares/handler404';
+import handlerError from './middlewares/erro/handlerError';
+import { handler404 } from './middlewares/erro/handler404';
 
 export class AppServer extends Server {
   constructor() {

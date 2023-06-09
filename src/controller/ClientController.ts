@@ -2,33 +2,43 @@ import { Controller, Delete, Get, Post, Put } from '@overnightjs/core';
 import { NextFunction, Request, Response } from 'express';
 import Client from '../model/client';
 import { ParsedQs } from 'qs';
+import { HandlerCastError } from '../error/handlerCastErro';
 
 @Controller('api/v1/clients')
 class ClientController {
     
   @Get('')
   public async getAllClients(req: Request, res: Response, next: NextFunction) {
+
+    
     try {
-      const clients =  await Client.find();
-      res.status(200).json(clients);
+      const { limitResult = 5, pag = 1} = req.query;
+      if((limitResult as number) > 0 && (pag as number) > 0) {
+        const clients =  await Client.find()
+          .sort({ name: 1 })
+          .skip(((pag as number) - 1) * (limitResult as number))
+          .limit(limitResult as number)
+          .exec();
+        res.status(200).json(clients);        
+      } else {
+        next(new HandlerCastError());
+      }
     } catch (error) {
-      //res.status(400).json((error as Error).message);
       next(error);
     }
   }
 
   @Get('filter')
   public async getFilterClients(req: Request, res: Response, next: NextFunction) {
-    const { name, email } = req.query;
+    const { name, email } = req.query;  
     
-
     const filter: { 
-      name?: string | string[] | ParsedQs[] | ParsedQs; 
-      email?:  string | string[] | ParsedQs[] | ParsedQs;
+      name?: string | string[] | ParsedQs | ParsedQs[]; 
+      email?:  string | string[] | ParsedQs | ParsedQs[];
     } = {};
 
-    if (name) filter.name = name;
-    if (email) filter.email  = email;
+    if (name) filter.name = { $regex: name, $options: 'i'}; //operadores do mongodb
+    if (email) filter.email  = { $regex: email, $options: 'i'};
     
     try {
       const client = await Client.find(filter);
@@ -43,9 +53,11 @@ class ClientController {
     const { id } = req.params;
     try {
       const client = await Client.findById(id);
+      
       if(!client) {
         res.status(404).json(`Id ${id} não encontrado`);
-      }            
+      }   
+     
       res.status(200).json(client);
     } catch (error) {
       next(error);

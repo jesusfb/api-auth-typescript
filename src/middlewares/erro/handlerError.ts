@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
-import { HttpErro } from '../error/httpErro';
-import { HandlerCastError } from '../error/handlerCastErro';
-import { HandleValidationErro } from '../error/handlerValidationErrro';
+import { HttpErro } from '../../error/httpErro';
+import { HandlerCastError } from '../../error/handlerCastErro';
+import { HandleValidationErro } from '../../error/handlerValidationErrro';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function handlerError(error: Error, _: Request, res: Response, next: NextFunction) {
@@ -11,7 +11,10 @@ export default function handlerError(error: Error, _: Request, res: Response, ne
     new HandlerCastError().sendMessageErro(res);
   }else if(error instanceof mongoose.Error.ValidationError) {
     new HandleValidationErro(error).sendMessageErro(res);  
-  }else {
+  }else if(error instanceof HttpErro) {
+    error.sendMessageErro(res);
+  }
+  else {
     new HttpErro().sendMessageErro(res);
   }
 }

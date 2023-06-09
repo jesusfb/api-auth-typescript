@@ -28,7 +28,7 @@ userSchema.path('email').validate(
     const emailCount = await mongoose.models.User.countDocuments({ email });
     return !emailCount;
   },
-  'already exists in the database.'
+  'email already exists in the database.'
 );
 
 
@@ -42,7 +42,7 @@ userSchema.pre<IUser>('save', async function() {
     const hashedPassword = await AuthService.hashPassword(this.password);
     this.password = hashedPassword;
   } catch (error) {
-    console.log(`Error hasshing the password fpr the user ${this.name}`);
+    console.log(`Error hasshing the password for the user ${this.name}`);
   }
 
 });
