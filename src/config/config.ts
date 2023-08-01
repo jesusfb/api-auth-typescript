@@ -16,9 +16,6 @@ export const config = {
   mongo: {
     url: MONGO_URL
   },
-  server: {
-    port: SERVER_PORT
-  },
   auth: {
     secret: SECRET_JWT
   }
